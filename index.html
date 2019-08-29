@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>px转vh/vw</title>
+
+  <!-- 引入样式 -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    html {
+      background-image: url('./images/timg.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .box {
+      max-width: 800px;
+      min-height: 500px;
+      border: 1px solid gray;
+      margin: 200px auto 0;
+      border-radius: 6px;
+      box-shadow: 0 0 6px #000;
+      position: relative;
+      padding: 30px;
+      background-color: #fff;
+    }
+
+    .title {
+      position: absolute;
+      font-size: 28px;
+      font-weight: 800;
+      color: #67c23a;
+      text-shadow: 0 0 2px gray;
+      top: -24px;
+      left: 22px;
+    }
+
+    .header {
+      margin-top: 20px;
+      width: 100%;
+      height: 40px;
+      border-radius: 4px;
+      box-shadow: 0 0 6px #000;
+      padding: 10px 0px;
+    }
+
+    .body {
+      width: 100%;
+      height: 340px;
+      box-shadow: 0 0 6px #000;
+      margin-top: 30px;
+      border-radius: 4px;
+      padding: 80px 0 0 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id='app'>
+    <div class="box">
+      <span class='title'>px转vw/vh</span>
+      <div class='header'>
+        <el-row :span='24'>
+          <el-col :span='8'>
+            <el-form label-width="120px">
+              <el-form-item label="设计图基准宽度">
+                <el-input v-model="in_width" placeholder="请输入宽度(px)"></el-input>
+              </el-form-item>
+            </el-form>
+          </el-col>
+          <el-col :span='16'>
+            <el-form label-width="120px">
+              <el-form-item label="设计图基准高度">
+                <el-input v-model="in_height" style="width: 36%;" placeholder="请输入高度(px)"></el-input>
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="body">
+        <el-form label-width="100px">
+          <el-form-item label="宽度">
+            <el-input v-model="self_width" placeholder="请输入宽度" style="width: 60%;"></el-input>
+          </el-form-item>
+          <el-form-item label="高度">
+            <el-input v-model="self_height" placeholder="请输入高度" style="width: 60%;"></el-input>
+          </el-form-item>
+          <el-form-item label="转换后宽度">
+            <span v-text='s_width'></span>
+          </el-form-item>
+          <el-form-item label="转换后高度">
+            <span v-text='s_height'></span>
+          </el-form-item>
+        </el-form>
+        <el-row style="padding-left:100px;">
+          <el-button type="success" round v-on:click='handleGetVwWidth(in_width,self_width)'>Get Width
+          </el-button>
+          <el-button type="success" round v-on:click='handleGetVwHeight(in_height,self_height)'>Get Height</el-button>
+          <el-button type="success" round v-on:click='handleGetAll'>Get All
+          </el-button>
+        </el-row>
+      </div>
+      <div class="result"></div>
+    </div>
+  </div>
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        in_width: '',
+        in_height: '',
+        self_width: '',
+        self_height: '',
+        s_width: '',
+        s_height: ''
+      },
+      methods: {
+        //获取转换后的宽度
+        handleGetVwWidth: function (baseWidth, selfWidth) {
+
+          let result = 100 / parseInt(baseWidth) * parseInt(selfWidth);
+          // console.log(this.in_width);
+          // console.log(selfWidth);
+          // console.log(result);
+          this.s_width = result + 'vw';
+          //this.in_width = '';
+          this.self_width = '';
+        },
+        //获取转换后的高度
+        handleGetVwHeight: function (baseHidth, selfHidth) {
+          let result = 100 / parseInt(baseHidth) * parseInt(selfHidth);
+          this.s_height = result + 'vh';
+          this.self_height = '';
+        },
+        //获取转换后的宽度和高度
+        // handleGetAll: function (baseWidth, selfWidth, baseHidth, selfHidth) {
+        //   this.handleGetVwWidth(baseWidth, selfWidth);
+        //   this.handleGetVwHeight(baseHidth, selfHidth);
+        // },
+        handleGetAll: function () {
+          this.handleGetVwWidth(this.in_width, this.self_width);
+          this.handleGetVwHeight(this.in_height, this.self_height);
+        }
+      },
+    })
+  </script>
+</body>
+
+</html>
